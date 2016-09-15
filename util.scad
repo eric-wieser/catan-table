@@ -3,7 +3,7 @@ include <constants.scad>
 function polar(theta) = [sin(theta), cos(theta)];
 
 centers = concat([[0, 0]], [
-    for(i = [1:6]) polar(i*60) 
+    for(i = [1:6]) polar(i*60)
 ], [
     for(i = [1:6]) 2 * polar(i*60)
 ], [
@@ -12,6 +12,16 @@ centers = concat([[0, 0]], [
 
 module road() {
     cube([1*in, 0.2*in, 0.2*in], center=true);
+}
+
+module boat_polygon() {
+    scale(mm) translate(-[12.5, 12.5]) polygon(points=[
+        [0, 0],
+        [0, 25],
+        [11.63, 28.80],
+        [25, 18.41],
+        [25, 0]
+    ]);
 }
 
 module for_point2d(locs) {
@@ -33,19 +43,57 @@ module for_line2d(locs) {
 
 dirs = [for(i = [1:6]) 1/sqrt(3) * polar(i*60 + 30)];
 
-corners = spacing * concat(
+
+// numbered by number of neighbours
+corners_1 = spacing * concat(
+    [ for(i = [0:5]) dirs[i]*4 ],
+    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+1) % 6]*2 ],
+    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+5) % 6]*2 ]
+);
+
+corners_2 = spacing * concat(
+    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+1) % 6] ],
+    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+5) % 6] ]
+);
+
+corners_3 = spacing * concat(
     [ for(i = [0:5]) dirs[i] ],
     [ for(i = [0:5]) dirs[i]*2 ],
     [ for(i = [0:5]) dirs[i]*2 + dirs[(i+1) % 6] ],
-    [ for(i = [0:5]) dirs[i]*2 + dirs[(i+5) % 6] ],
-    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+1) % 6] ],
-    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+5) % 6] ],
-    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+1) % 6]*2 ],
-    [ for(i = [0:5]) dirs[i]*3 + dirs[(i+5) % 6]*2 ],
-    [ for(i = [0:5]) dirs[i]*4 ]  
+    [ for(i = [0:5]) dirs[i]*2 + dirs[(i+5) % 6] ]
 );
-    
-edge_pairs = spacing * concat(
+
+corners = concat(corners_1, corners_2, corners_3);
+
+// numbers of faces
+function edge1_pairs_side(i) = [
+    [
+        dirs[i]*3 + dirs[(i+5)%6]*2,
+        dirs[i]*3 + dirs[(i+5)%6]
+    ],
+    [
+        dirs[i]*3 + dirs[(i+5)%6],
+        dirs[i]*4
+    ],
+    [
+        dirs[i]*4,
+        dirs[i]*3 + dirs[(i+1)%6]
+    ],
+    [
+        dirs[i]*3 + dirs[(i+1)%6],
+        dirs[i]*3 + dirs[(i+1)%6]*2
+    ],
+    [
+        dirs[i]*3 + dirs[(i+1)%6]*2,
+        dirs[i]*2 + dirs[(i+1)%6]*3
+    ]
+];
+
+edge1_pairs = spacing * concat_l([
+    for(i = [0:5]) edge1_pairs_side(i)
+]);
+
+edge2_pairs = spacing * concat(
     [
         for(i = [0:5]) [
             dirs[i], dirs[(i+1)%6]
@@ -73,23 +121,7 @@ edge_pairs = spacing * concat(
             dirs[i]*2 + dirs[(i+d)%6],
             dirs[i]*3 + dirs[(i+d)%6]
         ]
-    ],
-    [
-        for(d = [1,5]) for(i = [0:5]) [
-            dirs[i]*4,
-            dirs[i]*3 + dirs[(i+d)%6]
-        ]
-    ],
-    [
-        for(d = [1,5]) for(i = [0:5]) [
-            dirs[i]*3 + dirs[(i+d)%6]*2,
-            dirs[i]*3 + dirs[(i+d)%6]
-        ]
-    ],
-    [
-        for(i = [0:5]) [
-            dirs[i]*3 + dirs[(i+1)%6]*2,
-            dirs[i]*2 + dirs[(i+1)%6]*3
-        ]
     ]
 );
+
+edge_pairs = concat(edge2_pairs, edge1_pairs);
