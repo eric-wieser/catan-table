@@ -46,58 +46,50 @@ corners = spacing * concat(
 );
     
 edge_pairs = spacing * concat(
-    [for(i = [0:5]) [
-        dirs[i], dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i], dirs[i]*2
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2,
-        dirs[i]*2 + dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2,
-        dirs[i]*2 + dirs[(i+5)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2 + dirs[(i+1)%6],
-        dirs[(i+1)%6]*2 + dirs[i]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2 + dirs[(i+1)%6],
-        dirs[(i+1)%6]*2 + dirs[i]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2 + dirs[(i+1)%6],
-        dirs[i]*3 + dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*2 + dirs[(i+5)%6],
-        dirs[i]*3 + dirs[(i+5)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*4,
-        dirs[i]*3 + dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*4,
-        dirs[i]*3 + dirs[(i+5)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*4,
-        dirs[i]*3 + dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*3 + dirs[(i+1)%6]*2,
-        dirs[i]*3 + dirs[(i+1)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*3 + dirs[(i+5)%6]*2,
-        dirs[i]*3 + dirs[(i+5)%6]
-    ]],
-    [for(i = [0:5]) [
-        dirs[i]*3 + dirs[(i+1)%6]*2,
-        dirs[i]*2 + dirs[(i+1)%6]*3
-    ]]
+    [
+        for(i = [0:5]) [
+            dirs[i], dirs[(i+1)%6]
+        ]
+    ],
+    [
+        for(i = [0:5]) [
+            dirs[i], dirs[i]*2
+        ]
+    ],
+    [
+        for(d = [1,5]) for(i = [0:5]) [
+            dirs[i]*2,
+            dirs[i]*2 + dirs[(i+d)%6]
+        ]
+    ],
+    [
+        for(i = [0:5]) [
+            dirs[i]*2 + dirs[(i+1)%6],
+            dirs[(i+1)%6]*2 + dirs[i]
+        ]
+    ],
+    [
+        for(d = [1,5]) for(i = [0:5]) [
+            dirs[i]*2 + dirs[(i+d)%6],
+            dirs[i]*3 + dirs[(i+d)%6]
+        ]
+    ],
+    [
+        for(d = [1,5]) for(i = [0:5]) [
+            dirs[i]*4,
+            dirs[i]*3 + dirs[(i+d)%6]
+        ]
+    ],
+    [
+        for(d = [1,5]) for(i = [0:5]) [
+            dirs[i]*3 + dirs[(i+d)%6]*2,
+            dirs[i]*3 + dirs[(i+d)%6]
+        ]
+    ],
+    [
+        for(i = [0:5]) [
+            dirs[i]*3 + dirs[(i+1)%6]*2,
+            dirs[i]*2 + dirs[(i+1)%6]*3
+        ]
+    ]
 );
