@@ -121,5 +121,5 @@ module cut_table() {
 }
 
 // swap these to generate the other file
-! dxfs();
-// cut_table();
+// dxfs();
+cut_table();
