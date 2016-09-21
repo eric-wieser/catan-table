@@ -16,7 +16,7 @@ This comes in two parts:
 3. Inner bounding polygon and contained rectangles: Cut with a 0.25" bit to a depth of 3/8"
 4. Pentagons and bounding polygon: Finished with a 1/16" bit, to the same depths as before
 
-## Photos
+## [Photos](https://imgur.com/a/w7VND)
 
 [![Cut table complete with pieces](http://i.imgur.com/WMLwQrAl.jpg)](http://imgur.com/WMLwQrA)
 
